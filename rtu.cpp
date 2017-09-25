@@ -50,7 +50,17 @@ int RTU::CRC(){
 QAction* RTU::getactionret(){
     return ui->action_ret;
 }
+QPushButton* RTU::getsubtut(){
+    return ui->subbut;
+}
 
+QPushButton* RTU::getendbut(){
+    return ui->endbut;
+}
+
+QPushButton* RTU::getbegbut(){
+return ui->begbut;
+}
 
 //函数，它是一个虚函数，权限设置为protected。
 bool RTU::eventFilter(QObject *obj, QEvent *e)
@@ -131,13 +141,4 @@ void RTU::my_exit(){
 }
 
 
-void RTU::on_pushButton_2_clicked()
-{
-    this->ui->subbut->setEnabled(true);
 
-}
-
-void RTU::on_pushButton_3_clicked()
-{
-    this->ui->subbut->setEnabled(false);
-}

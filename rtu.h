@@ -19,6 +19,9 @@ public:
      MyTermios *myTermios;
      thired *mydialog;
      QAction* getactionret();
+     QPushButton* getsubtut();
+     QPushButton* getendbut();
+     QPushButton* getbegbut();
 
 
 private slots:
@@ -30,12 +33,6 @@ private slots:
     void my_setFont();
     void my_read();
     void my_write();
-
-    
-
-    void on_pushButton_2_clicked();
-
-    void on_pushButton_3_clicked();
 
 protected:
     bool eventFilter(QObject *obj, QEvent *e);

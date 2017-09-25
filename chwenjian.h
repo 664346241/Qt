@@ -30,7 +30,8 @@
 #include<QRadioButton>
 #include<QLineEdit>
 #include<QThread>
-
+#include<QPushButton>
+#include<QTimer>
 
 #define WD_bool unsigned char
 #define WD_TRUE 1

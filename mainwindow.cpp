@@ -1,18 +1,25 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
-using namespace MainWindow
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-
+     mytimer=new QTimer;
     ui->setupUi(this);
+    r=new RTU;
     this->setWindowTitle("termiros setting");
     QObject::connect(ui->actionSave_S,SIGNAL(triggered()),this,SLOT(saveasfile()) );
     QObject::connect(ui->actionExit_q,SIGNAL(triggered()),this,SLOT(my_exits()) );
     QObject::connect(ui->actionOpen_O,SIGNAL(triggered()),this,SLOT(my_open()) );
     QObject::connect(ui->actionSaves,SIGNAL(triggered()),this,SLOT(my_saves()) );
+
+    QObject::connect(this->r->getactionret(),SIGNAL(triggered()),this,SLOT(myDisPlay()));
+    QObject::connect(this->r->getbegbut(),SIGNAL(clicked()),this,SLOT(mybegin()));
+    QObject::connect(this->r->getendbut(),SIGNAL(clicked()),this,SLOT(mystop()));
+
+    QObject::connect(this->mytimer,SIGNAL(timeout()),this,SLOT(ontimeout()));
 
 
 }
@@ -25,74 +32,74 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_4_clicked()
 {
     int speed_arr[] = {9600,38400, 19200, 4800, 2400, 1200, 300};
-    QString MyTermiosName=ui->twrmiosnameinput->text();
-    int PortRate=speed_arr[ui->portrate->currentIndex()];
-    int datanum=ui->datanum->currentText().toInt();
-
-    QString res;
-    QString  tt;
-    tt.sprintf("\n Port Rate is%d \n DataNum is %d",PortRate,datanum);
-    res.append("termiros  Name is ：").append(MyTermiosName).append(tt);
-    QMessageBox::information(this,"termiros info",res);
-    //accept();
-
-    int stopnum=0;
-    if(this->ui->radiostop1->isChecked()){
+    QString MyTermiosName=ui->twrmiosnameinput->text();//名字
+    int PortRate=speed_arr[ui->portrate->currentIndex()];//频率
+    int datanum=ui->datanum->currentText().toInt();//数据位
+    int stopnum=0;//停止位
+    if(this->ui->radiostop1->isChecked())
         stopnum=1;
-
-    }
-    //if(this->ui->radiostop15->isChecked()){
-   //     stopnum=15;
-
-  //  }
-    if(this->ui->radiostop2->isChecked()){
+    if(this->ui->radiostop2->isChecked())
         stopnum=2;
-
-    }
     qDebug()<<stopnum;
-//   MyTermios *myt=new MyTermios(MyTermiosName,ui->radioButton->isChecked(),datanum,PortRate,ui->jiaoyan->currentIndex());
     bufflen=0;
     int fd;
 
-    fd = OpenDev(MyTermiosName.toStdString().c_str()); //打开串口
+    fd = OpenDev(MyTermiosName.trimmed().toStdString().c_str()); //打开串口
     if (fd > 0) {
-        set_speed(fd, speed_arr[PortRate]); //设置波特率
-        printf("Open Serial Port %s\n", dev_name);
-    } else {
+        struct termios Opt;
+        tcgetattr(fd, &Opt);
 
-        return ;
-    }
-    if (set_Parity(fd, datanum,stopnum, ui->jiaoyan->currentIndex()) == WD_FALSE) //设置校验位
+        tcflush(fd, TCIOFLUSH);
+        cfsetispeed(&Opt, PortRate);
+        cfsetospeed(&Opt, PortRate);
+        if (tcsetattr(fd, TCSANOW, &Opt)!= 0) {
+             QMessageBox::information(this,"termiros info","Set Parity Error1");
+             return;
+        }else{
+        tcflush(fd, TCIOFLUSH);
+
+        }
+   }
+
+    if (set_Parity(fd, datanum,stopnum, ui->jiaoyan->currentIndex()) == false) //设置校验位
        {
-           QMessageBox::information(this,"termiros info","Set Parity Error");
+            QMessageBox::information(this,"termiros info","Set Parity Error2");
         return;
        }
-    r=new RTU;
-    r->myTermios=myt;
-    r->show();
-    this->hide();
-    connect(this->r->getactionret(),SIGNAL(triggered()),this,SLOT(myDisPlay()));
- /*   QThread t;
-       QTimer timer;
-       Worker worker;
+       // r=new RTU;
+        r->show();
+        this->hide();
 
-       QObject::connect(&timer, SIGNAL(timeout()), &worker, SLOT(onTimeout()));
-       timer.start(1000);
-
-       worker.moveToThread(&t);
-
-       t.start();
-
-    */
 
 
 
 
 }
 
-void MainWindow::getTermiosdata(){
+void MainWindow::ontimeout(){
+    nread = read(fd, readbuff, sizeof (readbuff));
+    printf("read nread is %d\n", nread);
+   if ((nread > 0)) {
+       printf("Read Success!\n");
+       analysis(rebuff);
+   }
+}
+
+void MainWindow::mystop(){
+    mytimer->setSingleShot(1);
+    qDebug()<<"11111111111111111111111111111111111111111111111111111";
+     this->r->getsubtut()->setEnabled(false);
+}
+
+void MainWindow::mybegin(){
+    mytimer->start(5);
+    this->r->getsubtut()->setEnabled(true);
+}
+
+
+void MainWindow::getTermiosdata(int fd){
     int nread;
-    nread = read(fd,buffdata, sizeof (rebuff));
+    nread = read(fd,buffdata, sizeof (buffdata));
     printf("read nread is %d\n", nread);
     if ((nread > 0)) {
         printf("Read Success!\n");
@@ -212,7 +219,7 @@ void MainWindow::my_saves(){
 }
 
 
-int MainWindow::OpenDev(char *Dev) {
+int MainWindow::OpenDev(const char *Dev) {
     int fd = open(Dev, O_RDWR | O_NOCTTY | O_NONBLOCK);
     if (-1 == fd) {
         QMessageBox::information(this,"termiros info","Can't Open Serial Port!\nPlease check your port name");
@@ -227,6 +234,7 @@ int MainWindow::OpenDev(char *Dev) {
 int MainWindow::set_Parity(int fd, int databits, int stopbits, int parity) {//端口 数据位  停止位 校验位
 
     struct termios options;
+
     if (tcgetattr(fd, &options) != 0) {
          QMessageBox::information(this,"termiros info","SetupSerial 1");
         return false;
@@ -236,42 +244,55 @@ int MainWindow::set_Parity(int fd, int databits, int stopbits, int parity) {//�
     options.c_cflag &= ~CSIZE;
     switch (databits) {
         case 6:
-           opt->c_cflag |= CS6;
+           options.c_cflag &= ~CSIZE;
+           options.c_cflag |= CS6;
            break;
         case 5:
-           opt->c_cflag |= CS5;
+            options.c_cflag &= ~CSIZE;
+           options.c_cflag |= CS5;
            break;
         case 7:
+             options.c_cflag &= ~CSIZE;
             options.c_cflag |= CS7;
             break;
         case 8:
+            options.c_cflag &= ~CSIZE;
             options.c_cflag |= CS8;
             break;
         default:
         QMessageBox::information(this,"termiros info","SetupSerial 1");
        return false;
     }
+    qDebug()<<parity;
     switch (parity) {
         case 0:   /* 无校验          */
         //case 'N':
-            options.c_cflag &= ~PARENB;
+           options.c_cflag &= ~PARENB;
             options.c_iflag &= ~INPCK;
+            // options.c_cflag &= ~PARENB;
             break;
         case '0':
         //case 'O':
             options.c_cflag |= (PARODD | PARENB);         /* 奇校验          */
-            options.c_iflag |= (INPCK | ISTRIP);
+            options.c_iflag |=INPCK; //(INPCK | ISTRIP);
+           // options.c_cflag |= PARENB;
+            //options.c_cflag |= ~PARODD;
             break;
         case '1':
        // case 'E':
-            options.c_cflag |= PARENB;
-            options.c_cflag &= ~PARODD;
-            options.c_iflag |= (INPCK | ISTRIP);         /* 偶校验          */
+         options.c_cflag |= PARENB;
+         options.c_cflag &= ~PARODD;
+         options.c_iflag |= INPCK;
+           // options.c_cflag |= PARENB;
+          //  options.c_cflag &= ~PARODD;
+          //  options.c_iflag |= (INPCK | ISTRIP);         /* 偶校验          */
             break;
     default:
         QMessageBox::information(this,"termiros info","SetupSerial2");
        return false;
     }
+
+
 
     switch (stopbits) {
         case 1:
@@ -282,6 +303,7 @@ int MainWindow::set_Parity(int fd, int databits, int stopbits, int parity) {//�
             break;
         case 15:
             options.c_cflag &= ~CSTOPB; /* 1.5位停止位 */
+        break;
     default: QMessageBox::information(this,"termiros info","SetupSeria3");
         return false;
 
@@ -304,7 +326,7 @@ uint16_t MainWindow::CRC(char *buff, int bufflen) {
     uint16_t CRCjicun = 0xffff;
     for (int i = 0; i < bufflen; i++) {
         CRCjicun ^= buff[i];
-        for (j = 0; j < 8; j++) {
+        for (int j = 0; j < 8; j++) {
             if (CRCjicun & 0x01)
                 CRCjicun = (CRCjicun >> 1)^0xA001;
             else

@@ -15,13 +15,11 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     rtu.cpp \
-    mytermios.cpp \
     thired.cpp
 
 HEADERS  += mainwindow.h \
     rtu.h \
     chwenjian.h \
-    mytermios.h \
     thired.h
 
 FORMS    += mainwindow.ui \
