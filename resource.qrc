@@ -1,0 +1,110 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icon/Add.png</file>
+        <file>icon/Add Appointment.png</file>
+        <file>icon/Add Green Button.png</file>
+        <file>icon/Add To Favorite.png</file>
+        <file>icon/Appointment Cool.png</file>
+        <file>icon/Appointment Urgent.png</file>
+        <file>icon/Audio CD.png</file>
+        <file>icon/Audio Document.png</file>
+        <file>icon/Backup Green Button.png</file>
+        <file>icon/Bandwidth.png</file>
+        <file>icon/Blue Ball.png</file>
+        <file>icon/Cancel Red Button.png</file>
+        <file>icon/CD.png</file>
+        <file>icon/Clear Green Button.png</file>
+        <file>icon/Coherence.png</file>
+        <file>icon/Desktop.png</file>
+        <file>icon/Discussion.png</file>
+        <file>icon/Document.png</file>
+        <file>icon/Donate.png</file>
+        <file>icon/Eject Blue Button.png</file>
+        <file>icon/Export To Audio Document.png</file>
+        <file>icon/Export To Document.png</file>
+        <file>icon/Export To Movie Document.png</file>
+        <file>icon/Export To Picture Document.png</file>
+        <file>icon/Favorite.png</file>
+        <file>icon/Forward Mail.png</file>
+        <file>icon/Fullscreen.png</file>
+        <file>icon/Gear.png</file>
+        <file>icon/Gear Alt.png</file>
+        <file>icon/Get Document.png</file>
+        <file>icon/Get Info Blue Button.png</file>
+        <file>icon/Get Info Purple Button.png</file>
+        <file>icon/Get Mail.png</file>
+        <file>icon/Green Ball.png</file>
+        <file>icon/Grey Ball.png</file>
+        <file>icon/Help Blue Button.png</file>
+        <file>icon/Help Purple Button.png</file>
+        <file>icon/History.png</file>
+        <file>icon/iChat.png</file>
+        <file>icon/iChat Alt.png</file>
+        <file>icon/Import Audio Document.png</file>
+        <file>icon/Import Document.png</file>
+        <file>icon/Import Movie Document.png</file>
+        <file>icon/Import Picture Document.png</file>
+        <file>icon/Internet History.png</file>
+        <file>icon/Mail.png</file>
+        <file>icon/Menu.png</file>
+        <file>icon/Menu Item.png</file>
+        <file>icon/Minus Green Button.png</file>
+        <file>icon/Minus Red Button.png</file>
+        <file>icon/Movie CD.png</file>
+        <file>icon/Movie Document.png</file>
+        <file>icon/Mr. Bomb.png</file>
+        <file>icon/Network.png</file>
+        <file>icon/New Document.png</file>
+        <file>icon/New Mail.png</file>
+        <file>icon/Orange Ball.png</file>
+        <file>icon/Pause.png</file>
+        <file>icon/Pause All.png</file>
+        <file>icon/Pause Blue Button.png</file>
+        <file>icon/Pause Green Button.png</file>
+        <file>icon/Picture CD.png</file>
+        <file>icon/Picture Document.png</file>
+        <file>icon/Play.png</file>
+        <file>icon/Play All.png</file>
+        <file>icon/Play Blue Button.png</file>
+        <file>icon/Play Green Button.png</file>
+        <file>icon/Plugin Green Button.png</file>
+        <file>icon/Purple Ball.png</file>
+        <file>icon/readme.htm</file>
+        <file>icon/Record Button.png</file>
+        <file>icon/Record Red Button.png</file>
+        <file>icon/Red Ball.png</file>
+        <file>icon/Remove.png</file>
+        <file>icon/Remove Appointment.png</file>
+        <file>icon/Remove Document.png</file>
+        <file>icon/Rename Document.png</file>
+        <file>icon/Run.png</file>
+        <file>icon/Send Document.png</file>
+        <file>icon/Send Mail.png</file>
+        <file>icon/Smiley.png</file>
+        <file>icon/Smiley Blue.png</file>
+        <file>icon/Smiley Sad.png</file>
+        <file>icon/Smiley Sad Blue.png</file>
+        <file>icon/Smiley Star.png</file>
+        <file>icon/Smiley Star Pink.png</file>
+        <file>icon/Smiley Star Sad.png</file>
+        <file>icon/Spotlight Blue Button.png</file>
+        <file>icon/Star.png</file>
+        <file>icon/Stop.png</file>
+        <file>icon/Stop All.png</file>
+        <file>icon/Stop Green Button.png</file>
+        <file>icon/Stop Red Button.png</file>
+        <file>icon/Terminal.png</file>
+        <file>icon/Transfer.png</file>
+        <file>icon/Transfer Document.png</file>
+        <file>icon/Trash Empty.png</file>
+        <file>icon/Trash Full.png</file>
+        <file>icon/Universal Binary.png</file>
+        <file>icon/Unread Mail.png</file>
+        <file>icon/Unread Mail Alt.png</file>
+        <file>icon/User.png</file>
+        <file>icon/Users.png</file>
+        <file>icon/Web Browser.png</file>
+        <file>icon/Write Document.png</file>
+        <file>icon/Yellow Ball.png</file>
+    </qresource>
+</RCC>

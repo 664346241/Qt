@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RTU</class>
+ <widget class="QMainWindow" name="RTU">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>799</width>
+    <height>744</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>751</width>
+      <height>63</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>请输入16进制的有效通讯数据</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTextEdit" name="textEdit"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="subbut">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>提交</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>101</y>
+      <width>751</width>
+      <height>194</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;history&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QListWidget" name="historyitem"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>310</y>
+      <width>751</width>
+      <height>311</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt; color:#ff0000;&quot;&gt;接收：&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QListWidget" name="recevelist"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>630</y>
+      <width>248</width>
+      <height>35</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="text">
+        <string>开始</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_3">
+       <property name="text">
+        <string>结束</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>799</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFunction_F">
+    <property name="title">
+     <string>function(&amp;F)</string>
+    </property>
+    <addaction name="action_ret"/>
+    <addaction name="actionExit_Q"/>
+   </widget>
+   <widget class="QMenu" name="menuEidt_e">
+    <property name="title">
+     <string>eidt(&amp;E)</string>
+    </property>
+    <addaction name="action_all"/>
+    <addaction name="actionchexiao"/>
+    <addaction name="action_jianqie"/>
+    <addaction name="action_copy"/>
+    <addaction name="action_zhantie"/>
+    <addaction name="action_Refresh"/>
+    <addaction name="separator"/>
+    <addaction name="action_Date"/>
+    <addaction name="action_G"/>
+   </widget>
+   <widget class="QMenu" name="menuInut_I">
+    <property name="title">
+     <string>操作（&amp;I)</string>
+    </property>
+    <addaction name="actionTemp_T"/>
+    <addaction name="action_query"/>
+    <addaction name="action_write"/>
+   </widget>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>协议选择</string>
+    </property>
+    <addaction name="actionModbus"/>
+   </widget>
+   <addaction name="menuFunction_F"/>
+   <addaction name="menuEidt_e"/>
+   <addaction name="menuInut_I"/>
+   <addaction name="menu"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_ret">
+   <property name="text">
+    <string>端口配置(&amp;R)</string>
+   </property>
+  </action>
+  <action name="actionExit_Q">
+   <property name="text">
+    <string>exit(&amp;Q)</string>
+   </property>
+  </action>
+  <action name="actionchexiao">
+   <property name="text">
+    <string>撤销（&amp;U）</string>
+   </property>
+  </action>
+  <action name="action_jianqie">
+   <property name="text">
+    <string>剪切（&amp;X）</string>
+   </property>
+  </action>
+  <action name="action_copy">
+   <property name="text">
+    <string>复制（&amp;C）</string>
+   </property>
+  </action>
+  <action name="action_Refresh">
+   <property name="text">
+    <string>重做（&amp;R）</string>
+   </property>
+  </action>
+  <action name="action_zhantie">
+   <property name="text">
+    <string>粘贴（&amp;V）</string>
+   </property>
+  </action>
+  <action name="action_all">
+   <property name="text">
+    <string>全选（&amp;A）</string>
+   </property>
+  </action>
+  <action name="action_Date">
+   <property name="text">
+    <string>日期（&amp;D）</string>
+   </property>
+  </action>
+  <action name="actionTemp_T">
+   <property name="text">
+    <string>temp(&amp;T)</string>
+   </property>
+  </action>
+  <action name="action_G">
+   <property name="text">
+    <string>格式（&amp;G）</string>
+   </property>
+  </action>
+  <action name="actionModbus">
+   <property name="text">
+    <string>modbus协议</string>
+   </property>
+  </action>
+  <action name="action_query">
+   <property name="text">
+    <string>查询（&amp;Q）</string>
+   </property>
+  </action>
+  <action name="action_write">
+   <property name="text">
+    <string>写入（&amp;W）</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
