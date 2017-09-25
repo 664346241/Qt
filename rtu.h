@@ -22,7 +22,7 @@ public:
      QPushButton* getsubtut();
      QPushButton* getendbut();
      QPushButton* getbegbut();
-
+     QListWidget* getshowlistwidget();
 
 private slots:
     void on_pushButton_clicked();

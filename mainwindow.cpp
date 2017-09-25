@@ -42,8 +42,6 @@ void MainWindow::on_pushButton_4_clicked()
         stopnum=2;
     qDebug()<<stopnum;
     bufflen=0;
-    int fd;
-
     fd = OpenDev(MyTermiosName.trimmed().toStdString().c_str()); //打开串口
     if (fd > 0) {
         struct termios Opt;
@@ -76,12 +74,50 @@ void MainWindow::on_pushButton_4_clicked()
 
 }
 
+QString chartoQstring(char *pData,int nLength){
+    char* m_pData;
+    memcpy(m_pData, pData, nLength);
+    int m_nLength = nLength;
+    QString m_exchange;
+    m_exchange.append("111");
+        //char存储到QString里
+        for (int i = 0; i < m_nLength; i++)
+        {
+            bool ok;
+            QString m_tmp = QString::number(*m_pData,16);
+            //接收字符为0x00，变字符串为00
+            if (m_tmp.toInt(&ok,10) == 0)
+            {
+                m_tmp = ("00");
+            }
+            //接收字符为0x04,0x07等，补足0
+            if ((m_tmp.toInt(&ok,10) < 10) && (m_tmp.toInt(&ok,10) > 0))
+            {
+                m_tmp = m_tmp.insert(0, "0");
+            }
+
+            m_exchange.append(m_tmp);
+            m_exchange.append(" ");
+            m_pData = m_pData + 1;
+            m_tmp.clear();
+        }
+        return m_exchange;
+
+}
+char* Qstringtochar(char *pData,int nLength){
+char *a;
+return a;
+
+}
+
 void MainWindow::ontimeout(){
-    nread = read(fd, readbuff, sizeof (readbuff));
-    printf("read nread is %d\n", nread);
-   if ((nread > 0)) {
-       printf("Read Success!\n");
-       analysis(rebuff);
+    int nread = read(fd, readbuff, sizeof (readbuff));
+    printf("myread nread is %d\n", nread);
+   if ((nread >= 0)) {
+       qDebug()<<"Read Success!\n";
+       QListWidgetItem *item=new QListWidgetItem;
+       item->setText(chartoQstring(buffdata,nread));
+       this->r->getshowlistwidget()->addItem(item);
    }
 }
 
@@ -92,21 +128,8 @@ void MainWindow::mystop(){
 }
 
 void MainWindow::mybegin(){
-    mytimer->start(5);
+    mytimer->start(1000);
     this->r->getsubtut()->setEnabled(true);
-}
-
-
-void MainWindow::getTermiosdata(int fd){
-    int nread;
-    nread = read(fd,buffdata, sizeof (buffdata));
-    printf("read nread is %d\n", nread);
-    if ((nread > 0)) {
-        printf("Read Success!\n");
-       // this->r->
-        //需要添加到RTU中去
-    }
-
 }
 
 void  MainWindow::myDisPlay(){

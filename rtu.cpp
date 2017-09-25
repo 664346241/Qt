@@ -46,6 +46,10 @@ int RTU::CRC(){
     
     
 }
+QLineEdit* RTU::getinputlineedit(){
+    return ui->textEdit;
+
+}
 
 QAction* RTU::getactionret(){
     return ui->action_ret;
@@ -60,6 +64,11 @@ QPushButton* RTU::getendbut(){
 
 QPushButton* RTU::getbegbut(){
 return ui->begbut;
+}
+
+QListWidget* RTU::getshowlistwidget(){
+return ui->recevelist;
+
 }
 
 //函数，它是一个虚函数，权限设置为protected。

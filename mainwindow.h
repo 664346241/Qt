@@ -20,6 +20,7 @@ public:
     char buffdata[1024],readbuff[1024];
     int bufflen;
      QTimer *mytimer;
+     int fd;
 private slots:
     void on_pushButton_4_clicked();
     void saveasfile();
@@ -37,7 +38,7 @@ private:
     int set_Parity(int fd, int databits, int stopbits, int parity);
     uint16_t CRC(char *buff, int bufflen);
     int OpenDev(const char *Dev);
-    void getTermiosdata(int fd);
+ //   void getTermiosdata(int fd);
 
 
 };
