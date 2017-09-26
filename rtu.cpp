@@ -40,13 +40,12 @@ RTU::~RTU()
     delete ui;
 }
 
-int RTU::CRC(){
 
-   return 11;
-    
-    
-}
-QLineEdit* RTU::getinputlineedit(){
+ QListWidget* RTU::gethistoryWidget(){
+     return ui->historyitem;
+ }
+
+QTextEdit* RTU::getinputlineedit(){
     return ui->textEdit;
 
 }

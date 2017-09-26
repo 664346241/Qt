@@ -32,7 +32,7 @@
 #include<QThread>
 #include<QPushButton>
 #include<QTimer>
-
+#include<QTextEdit>
 #define WD_bool unsigned char
 #define WD_TRUE 1
 #define WD_FALSE 0

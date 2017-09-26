@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(this->r->getendbut(),SIGNAL(clicked()),this,SLOT(mystop()));
 
     QObject::connect(this->mytimer,SIGNAL(timeout()),this,SLOT(ontimeout()));
+    QObject::connect(this->r->getsubtut(),SIGNAL(clicked()),this,SLOT(mysubmit()));
 
 
 }
@@ -104,10 +105,41 @@ QString chartoQstring(char *pData,int nLength){
         return m_exchange;
 
 }
-char* Qstringtochar(char *pData,int nLength){
-char *a;
-return a;
+int getchar(const QChar c){
+    if(c>='0'&&c<='9'){
+        return c.toAscii()-'0';
+    }else if(c>='a'&&c<='f')
+        return c.toAscii()-'a'+10;
+    else if(c>='A'&&c<='F')
+        return c.toAscii()-'A'+10;
+}
 
+ int MainWindow::CRC(){
+     int crc16 = 0x0000ffff;
+
+     for (int i = 0;i < bufflen;i++)
+     {
+         crc16 = crc16 ^ buffdata[i];
+         for (int j = 0;j < 8;j++)
+         {
+
+         if (crc16 & 0x01)
+         crc16 = (crc16 >> 1) ^ 0xa001;
+         else
+             crc16 = crc16 >> 1;
+
+         }
+
+     }
+     return crc16;
+
+
+}
+
+void MainWindow::Qstringtochar(QString &temp,int len){
+    for(int i=0;i<len;i++){
+        buffdata[i]=16*getchar(temp.at(2*i))+getchar(temp.at(2*i+1));
+    }
 }
 
 void MainWindow::ontimeout(){
@@ -119,6 +151,56 @@ void MainWindow::ontimeout(){
        item->setText(chartoQstring(buffdata,nread));
        this->r->getshowlistwidget()->addItem(item);
    }
+}
+char getnum(int num){
+    if(num<10)
+        return num+'0';
+    else
+        return num-10+'A';
+}
+
+
+QString getint(unsigned int num){
+    bool ok;
+    QString m_tmp;
+    //接收字符为0x00，变字符串为00
+    if (num /16<10)
+        m_tmp.append('0');
+     m_tmp.append(getnum(num/16));
+
+
+    if (num %16<10)
+        m_tmp.append('0');
+    m_tmp.append(getnum(num%16));
+
+    return m_tmp;
+}
+void MainWindow::mysubmit(){
+    QString input=this->r->getinputlineedit()->toPlainText();
+    int inputlen=input.length();
+    if(inputlen%2==1){
+        QMessageBox::information(this,"input error","input must be a even ");
+    return;
+
+    }else{
+       bufflen=inputlen/2;
+
+      Qstringtochar(input,bufflen);
+
+      unsigned int ret=CRC();
+      qDebug()<<ret<<"    "<<(ret>>8)<<"    "<<(ret>>8&0xff);
+      buffdata[bufflen]=(ret>>8&0xff);
+      buffdata[bufflen+1]=(ret&0xff);
+      bufflen+=2;
+      input.append(getint(ret>>8&0xff));
+      input.append(getint(ret&0xff));
+
+       mysend(input);
+
+    }
+
+
+
 }
 
 void MainWindow::mystop(){
@@ -145,11 +227,22 @@ thisname:%s\n
 termiosname:%s\n
 portrate:%d\n
 
-
-
  *
  *
 */
+
+
+void MainWindow::mysend(QString te){
+    int nread = write(fd, buffdata, sizeof (char)*bufflen);
+    qDebug()<<"write nread ";
+    if ((nread > 0)) {
+      qDebug()<<"write Success ";
+      QListWidgetItem  *item=new QListWidgetItem;
+      item->setText(te);
+      this->r->gethistoryWidget()->addItem(item);
+    }
+
+}
 
  void MainWindow::saveasfile(){
 
@@ -329,8 +422,6 @@ int MainWindow::set_Parity(int fd, int databits, int stopbits, int parity) {//�
         break;
     default: QMessageBox::information(this,"termiros info","SetupSeria3");
         return false;
-
-
     }
 
     options.c_cc[VTIME] = 0;
@@ -342,22 +433,4 @@ int MainWindow::set_Parity(int fd, int databits, int stopbits, int parity) {//�
     }
     return 1;
 }
-
-
-
-uint16_t MainWindow::CRC(char *buff, int bufflen) {
-    uint16_t CRCjicun = 0xffff;
-    for (int i = 0; i < bufflen; i++) {
-        CRCjicun ^= buff[i];
-        for (int j = 0; j < 8; j++) {
-            if (CRCjicun & 0x01)
-                CRCjicun = (CRCjicun >> 1)^0xA001;
-            else
-                CRCjicun = CRCjicun >> 1;
-        }
-    }
-    return CRCjicun;
-}
-
-
 

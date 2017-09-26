@@ -12,7 +12,8 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-
+    void Qstringtochar(QString &temp,int len);
+    int CRC();
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     QString myfilename;
@@ -31,14 +32,16 @@ private slots:
     void ontimeout();
     void mystop();
     void mybegin();
+    void mysubmit();
 
 private:
     Ui::MainWindow *ui;
   //  RTU *rtu=new RTU;
     int set_Parity(int fd, int databits, int stopbits, int parity);
-    uint16_t CRC(char *buff, int bufflen);
+
     int OpenDev(const char *Dev);
  //   void getTermiosdata(int fd);
+    void mysend(QString te);
 
 
 };

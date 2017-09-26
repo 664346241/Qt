@@ -12,18 +12,18 @@ class RTU : public QMainWindow
     Q_OBJECT
 
 public:
-    int CRC();
     explicit RTU(QWidget *parent = 0);
     ~RTU();
      Ui::RTU *ui;
      MyTermios *myTermios;
      thired *mydialog;
      QAction* getactionret();
+     QTextEdit* getinputlineedit();
      QPushButton* getsubtut();
      QPushButton* getendbut();
      QPushButton* getbegbut();
      QListWidget* getshowlistwidget();
-
+     QListWidget* gethistoryWidget();
 private slots:
     void on_pushButton_clicked();
     void my_exit();
