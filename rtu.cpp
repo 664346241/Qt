@@ -10,7 +10,7 @@ RTU::RTU(QWidget *parent) :
     ui->setupUi(this);
     mydialog=new thired;
     mydialog->hide();
-    ui->textEdit->installEventFilter(this);
+  //  ui->textEdit->installEventFilter(this);
 
 
 
@@ -22,17 +22,15 @@ RTU::RTU(QWidget *parent) :
     QObject::connect(ui->actionchexiao,SIGNAL(triggered()),ui->textEdit,SLOT(undo()) );
     QObject::connect(ui->action_Date,SIGNAL(triggered()),this,SLOT(my_date()) );
     QObject::connect(ui->action_G,SIGNAL(triggered()),this,SLOT(my_setFont()) );
-
     QObject::connect(ui->actionTemp_T,SIGNAL(triggered()),this,SLOT(my_temp()));
-
     QObject::connect(ui->action_query,SIGNAL(triggered()),this,SLOT(my_read()) );
-    QObject::connect(ui->action_write,SIGNAL(triggered()),this,SLOT(my_write()) );
+    QObject::connect(ui->action_write,SIGNAL(triggered()),this,SLOT(my_write()));
+    QObject::connect(ui->actionExit_Q,SIGNAL(triggered()),this,SLOT(close()) );
 
     qDebug()<<QString("old myrtu");
 
 
 }
-
 
 
 RTU::~RTU()
@@ -69,7 +67,7 @@ QListWidget* RTU::getshowlistwidget(){
 return ui->recevelist;
 
 }
-
+/*
 //函数，它是一个虚函数，权限设置为protected。
 bool RTU::eventFilter(QObject *obj, QEvent *e)
 {
@@ -86,7 +84,7 @@ bool RTU::eventFilter(QObject *obj, QEvent *e)
     }
     return false;
 }
-
+*/
 void RTU::my_read(){
 
     mydialog->show();
@@ -134,7 +132,7 @@ void RTU::my_setFont(){
     }
 
 }
-
+/*
 void RTU::on_pushButton_clicked()
 {
 QString temp=ui->textEdit->toPlainText();
@@ -143,10 +141,15 @@ item->setText(temp);
 ui->historyitem->addItem(item);
 ui->textEdit->clear();
 ui->textEdit->setFocus();
-}
+}*/
 void RTU::my_exit(){
     this->close();
 }
 
 
 
+
+void RTU::on_subbut_clicked()
+{
+
+}

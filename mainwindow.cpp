@@ -21,6 +21,106 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(this->mytimer,SIGNAL(timeout()),this,SLOT(ontimeout()));
     QObject::connect(this->r->getsubtut(),SIGNAL(clicked()),this,SLOT(mysubmit()));
+    QObject::connect(r->mydialog->getsubmit(),SIGNAL(clicked()),this,SLOT(mydialogsub()));
+
+}
+
+char getnum(int num){
+    if(num<10)
+        return num+'0';
+    else
+        return num-10+'A';
+}
+
+
+QString getint(unsigned int num){
+    QString m_tmp;
+    //接收字符为0x00，变字符串为0
+     m_tmp.append(getnum(num/16));
+    m_tmp.append(getnum(num%16));
+
+    return m_tmp;
+}
+
+void MainWindow::mydialogsub(){
+    bool ok;
+    QString machineaddress=r->mydialog->getmachineaddress()->text().trimmed();
+    QString address=r->mydialog->getaddress()->text().trimmed();
+    QString addresslen=r->mydialog->getaddresslenth()->text().trimmed();
+    QString jicunvalue=r->mydialog->getjicunvalue()->text().trimmed();
+    QString input;
+    if(machineaddress.length()==0){
+        QMessageBox::information(this,"ERROR","machinedata is nor !!");
+        return;
+    }else if(machineaddress.length()==1)
+        input.append("0");
+    input.append(machineaddress);
+    if(r->mydialog->getradioread()->isChecked()){//read
+        input.append("03");
+    }else{//write
+        input.append("10");
+    }
+    switch (address.length()) {
+    case 0:
+        QMessageBox::information(this,"ERROR","machinedata is nor !!");
+        return;
+    case 1:
+         input.append("000");
+        break;
+    case 2:
+         input.append("00");
+        break;
+    case 3:
+         input.append("0");
+        break;
+    default:
+        break;
+    }
+    input.append(address);
+
+    switch (addresslen.length()) {
+    case 0:
+        QMessageBox::information(this,"ERROR","machinedata is nor !!");
+        return;
+    case 1:
+         input.append("000");
+        break;
+    case 2:
+         input.append("00");
+        break;
+    case 3:
+         input.append("0");
+        break;
+    default:
+        break;
+    }
+    input.append(addresslen);
+    if(!r->mydialog->getradioread()->isChecked()){
+        input.append(jicunvalue);
+    }
+
+
+    int inputlen=input.length();
+    if(inputlen%2==1){
+        QMessageBox::information(this,"input error","input must be a even ");
+    return;
+    }else{
+       bufflen=inputlen/2;
+      Qstringtochar(input,bufflen);
+
+      unsigned int ret=CRC();
+      qDebug()<<ret<<"    "<<(ret>>8)<<"    "<<(ret>>8&0xff);
+      buffdata[bufflen]=(ret>>8&0xff);
+      buffdata[bufflen+1]=(ret&0xff);
+      bufflen+=2;
+      input.append(getint(ret>>8&0xff));
+      input.append(getint(ret&0xff));
+       mysend(input);
+
+    }
+
+
+
 
 
 }
@@ -75,8 +175,8 @@ void MainWindow::on_pushButton_4_clicked()
 
 }
 
-QString chartoQstring(char *pData,int nLength){
-    char* m_pData;
+QString chartoQstring(unsigned char *pData,int nLength){
+    unsigned char* m_pData;
     memcpy(m_pData, pData, nLength);
     int m_nLength = nLength;
     QString m_exchange;
@@ -116,10 +216,12 @@ int getchar(const QChar c){
 
  int MainWindow::CRC(){
      int crc16 = 0x0000ffff;
-
+     printf("%d\n",bufflen);
+     for (int i = 0;i < bufflen;i++)
+          printf("%X\n",buffdata[i]);
      for (int i = 0;i < bufflen;i++)
      {
-         crc16 = crc16 ^ buffdata[i];
+         crc16 = crc16 ^buffdata[i];
          for (int j = 0;j < 8;j++)
          {
 
@@ -129,7 +231,7 @@ int getchar(const QChar c){
              crc16 = crc16 >> 1;
 
          }
-
+         printf("%X\n",crc16);
      }
      return crc16;
 
@@ -141,7 +243,6 @@ void MainWindow::Qstringtochar(QString &temp,int len){
         buffdata[i]=16*getchar(temp.at(2*i))+getchar(temp.at(2*i+1));
     }
 }
-
 void MainWindow::ontimeout(){
     int nread = read(fd, readbuff, sizeof (readbuff));
     printf("myread nread is %d\n", nread);
@@ -152,29 +253,8 @@ void MainWindow::ontimeout(){
        this->r->getshowlistwidget()->addItem(item);
    }
 }
-char getnum(int num){
-    if(num<10)
-        return num+'0';
-    else
-        return num-10+'A';
-}
 
 
-QString getint(unsigned int num){
-    bool ok;
-    QString m_tmp;
-    //接收字符为0x00，变字符串为00
-    if (num /16<10)
-        m_tmp.append('0');
-     m_tmp.append(getnum(num/16));
-
-
-    if (num %16<10)
-        m_tmp.append('0');
-    m_tmp.append(getnum(num%16));
-
-    return m_tmp;
-}
 void MainWindow::mysubmit(){
     QString input=this->r->getinputlineedit()->toPlainText();
     int inputlen=input.length();
@@ -235,7 +315,7 @@ portrate:%d\n
 void MainWindow::mysend(QString te){
     int nread = write(fd, buffdata, sizeof (char)*bufflen);
     qDebug()<<"write nread ";
-    if ((nread > 0)) {
+     if ((nread > 0)) {
       qDebug()<<"write Success ";
       QListWidgetItem  *item=new QListWidgetItem;
       item->setText(te);

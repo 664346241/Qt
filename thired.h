@@ -19,10 +19,15 @@ public:
     QRadioButton* getwrite();
     QPushButton* subbut();
     QLineEdit* getjicunvalue();
-
+    QRadioButton* getradioread();
+    QLineEdit* getmachineaddress();
+    QLineEdit* getaddress();
+    QLineEdit* getaddresslenth();
+    QPushButton* getsubmit();
 
 private slots:
     void on_exitbut_2_clicked();
+      void  changeMyValue();
 };
 
 #endif // THIRED_H

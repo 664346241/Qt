@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>608</width>
-    <height>438</height>
+    <width>420</width>
+    <height>588</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -45,6 +45,19 @@
         </widget>
        </item>
        <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>180</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
         <widget class="QRadioButton" name="radiowrite_2">
          <property name="text">
           <string>写入</string>
@@ -69,7 +82,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="machineaddress_2"/>
+        <widget class="QLineEdit" name="machineaddress_2">
+         <property name="cursorPosition">
+          <number>0</number>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -92,7 +109,7 @@
        <item>
         <widget class="QLabel" name="label_7">
          <property name="text">
-          <string>操作寄存器个数（如果只操作一个填1）</string>
+          <string>操作寄存器个数）</string>
          </property>
         </widget>
        </item>

@@ -25,7 +25,7 @@ public:
      QListWidget* getshowlistwidget();
      QListWidget* gethistoryWidget();
 private slots:
-    void on_pushButton_clicked();
+
     void my_exit();
   //  void my_ret();
     void my_temp();
@@ -33,9 +33,10 @@ private slots:
     void my_setFont();
     void my_read();
     void my_write();
+    void on_subbut_clicked();
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *e);
+  //  bool eventFilter(QObject *obj, QEvent *e);
 private:
     int my_xieyi;
 

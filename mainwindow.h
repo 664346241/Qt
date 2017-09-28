@@ -18,7 +18,7 @@ public:
     ~MainWindow();
     QString myfilename;
     RTU *r;
-    char buffdata[1024],readbuff[1024];
+    unsigned char buffdata[1024],readbuff[1024];
     int bufflen;
      QTimer *mytimer;
      int fd;
@@ -33,7 +33,7 @@ private slots:
     void mystop();
     void mybegin();
     void mysubmit();
-
+    void mydialogsub();
 private:
     Ui::MainWindow *ui;
   //  RTU *rtu=new RTU;
